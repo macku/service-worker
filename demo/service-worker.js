@@ -6,17 +6,17 @@ console.log('SW Resources: Inside a service worker');
 
 var CACHE_NAME = 'my-cat-site';
 var urlsToCache = [
-	'/',
-	'/service-worker.js',
-	'/serviceworker-cache-polyfill.js',
-	'/index.html',
-	'/online-offline.js',
-	'/example.js',
-	'/xhr.js',
-	'/styles.css',
-	'/resources/fallback.json',
-	'/resources/cat.jpg',
-	'/resources/sample1.json'
+	'/service-worker/demo/',
+	'/service-worker/demo/service-worker.js',
+	'/service-worker/demo/serviceworker-cache-polyfill.js',
+	'/service-worker/demo/index.html',
+	'/service-worker/demo/online-offline.js',
+	'/service-worker/demo/example.js',
+	'/service-worker/demo/xhr.js',
+	'/service-worker/demo/styles.css',
+	'/service-worker/demo/resources/fallback.json',
+	'/service-worker/demo/resources/cat.jpg',
+	'/service-worker/demo/resources/sample1.json'
 ];
 
 self.addEventListener('install', function(event) {
@@ -52,7 +52,7 @@ self.addEventListener('fetch', function(event) {
 			else if (event.request.url.match(/\.jpg$/i)) {
 				console.log('Cat ahead!');
 
-				return fetch('resources/cat.jpg', {
+				return fetch('/service-worker/demo/resources/cat.jpg', {
 					mode: 'cors'
 				});
 			}
@@ -71,9 +71,15 @@ self.addEventListener('fetch', function(event) {
 			console.log('in the cache!');
 
 			return cache.match(event.request).then(function(response) {
-				console.log('Loaded form cache', event.request.url);
+				if (response) {
+					console.log('Loaded form cache', event.request.url);
+				}
 
-				return response;
+				return response || fetch(event.request).then(function(response) {
+					console.log('Request have been loaded out of cache', event.request.url);
+
+					return response;
+				});
 			});
 		})
 	);

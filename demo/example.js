@@ -1,4 +1,10 @@
 (function(window) {
+	if (document.location.protocol !== 'https:') {
+		alert('We need HTTPS connection so let me redirect you!');
+		document.location = document.location.toString().replace(/^http:/i, 'https:');
+		return;
+	}
+
 	var navigator = window.navigator;
 
 	console.log('Are we ussing ServiceWorker?', navigator.serviceWorker.controller ? 'Yes' : 'No');
@@ -12,7 +18,7 @@
 		console.log('Resources ServiceWorker: Ready!');
 
 		// Example 1
-		var jsonUrl = '/resources/sample1.json';
+		var jsonUrl = '/service-worker/demo/resources/sample1.json';
 
 		loadXhr(jsonUrl).then(function(json) {
 			console.log('#1 Loaded JSON data: ', json);
@@ -21,7 +27,7 @@
 		});
 
 		// Example 2
-		var jsonUrl = 'resources/sample2.json';
+		var jsonUrl = '/service-worker/demo/resources/sample2.json';
 
 		loadXhr(jsonUrl).then(function(json) {
 			console.log('#2 Loaded JSON data: ', json);
