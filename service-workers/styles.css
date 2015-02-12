@@ -1,0 +1,11 @@
+.connection {
+	display: none;
+}
+
+	.connection--online {
+		color: green;
+	}
+
+	.connection--offline  {
+		color: red;
+	}
